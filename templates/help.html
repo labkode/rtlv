@@ -1,0 +1,38 @@
+{% extends "templates/main.html" %}
+{% block content %}
+
+<h4>What is a system ?</h4>
+<p>A system is a working application you want to monitor its logs. The application can be from a simple web application to the system log of the OS.
+
+<h4>What format must have the logs</h4>
+<p> The log needs three fields to be accepted</p>
+<table class="table striped">
+	<tbody>
+		<tr>
+			<td>system</td>
+			<td>This is the id of system you are monitoring.</td>
+		</tr>
+		<tr>
+			<td>level</td>
+			<td>This is theinformation level of the log. Valid values are info, warn and error</td>
+		</tr>
+		<tr>
+			<td>msg</td>
+			<td>This is the message of the log</td>
+		</tr>
+		<tr>
+			<td>ts</td>
+			<td>This is the timestamp of the log in Unix Epoch format(10 digit)</td>
+		</tr>
+	</tbody>
+</table>
+<h4>cURL samples</h4>
+<table class="table striped">
+	<tbody>
+		<tr>
+			<td>Create an info log</td>
+			<td>curl -X POST realtimelogviewer.appspot.com/admin/logs --data '{"system":"labkodesys","level":"info","msg":"Hello world", "ts": 1430649856}'</td>
+	</tbody>
+</table>
+
+{% endblock content %}

@@ -1,0 +1,31 @@
+{% extends "templates/main.html" %}
+{% block content %}
+<div class="alert {{message.type}}">{{message.payload}}</div>
+<a href="/admin/systems/create"><button class="btn btn-primary" style="margin-bottom:40px">Create new system</button></a>
+<table id="log-table" class="table table-stripped table-condensed table-hover">
+  <thead>
+    <tr>
+      <td><b>ID</b></td>
+      <td><b>Description</b></td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for system in systems %}
+    <tr>
+      <td>{{ system.key.id() }}</td>
+      <td>{{ system.description }}</td>
+      <td><form onsubmit="onSubmit" method="POST" action="/admin/systems/delete"><input type="hidden" name="system"value="{{system.key.id()}}"/><button type="submit" class="btn btn-danger">Delete</button></form></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+  function onSubmit(e) {
+    console.log(e);
+  }
+</script>
+{% endblock %}

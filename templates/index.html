@@ -1,0 +1,33 @@
+{% extends "templates/main.html" %}
+{% block content %}
+<div>
+	<p><i class="fa fa-cog fa-spin"></i><i class="fa fa-cog fa-4x fa-spin"></i><i class="fa fa-cog fa-2x fa-spin"></i></p>
+	<p>Real Time Log Viewer</p>
+	<p>This application let´s you visualize logs that are being pushed to your application in real time.</p>
+
+	{% if systems|length > 0 %}
+	<form class="form-horizontal" method="GET" action="/systems">
+	  <div class="form-group">
+	   <h4>Choose a system to visualize its logs</h4>
+	   <select name="system" class="form-control select select-primary select-block mbl">
+		{% for system in systems %}
+			<option value="{{ system.key.id() }}"> {{ system.key.id() }} </option>
+		{% endfor %}
+		</select>
+	  </div>
+	  <div class="form-group">
+		<button type="submit" class="btn btn-hg btn-info">Visualize <i class="fa fa-eye"></i></button>
+	  </div>
+	</form>
+	{% else %}
+		<p>No systems found</p>
+		<a href="/admin/systems/create">Create system</a>
+	{% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+	$("select").select2({dropdownCssClass: 'dropdown-inverse'});
+</script>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "templates/main.html" %}
+{% block content %}
+
+<div>
+	<p>Log information for system</p>
+	<h3>{{system.key.id()}}</h3>
+	<p>{{system.description}}</p>
+</div>
+
+<div class="row pull-right">
+	<p>Real time analisys</p>
+	<input id="real-time-switch" type="checkbox" checked data-toggle="switch" name="info-square-switch" data-on-color="info" id="switch-04"/>
+</div>	
+
+<table id="log-table" class="table table-stripped table-condensed table-hover">
+	<thead>
+		<tr>
+			<td><b>Timestamp</b></td>
+			<td><b>Level</b></td>
+			<td><b>Message</b></td>
+		</tr>
+	</thead>
+	<tbody>
+		{% for log in logs %}
+		<tr>
+			<td>{{ log.ts }}</td>
+			<td><label class="{{ log.style_level }}">{{ log.level }}</label></td>
+			<td>{{ log.msg }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+<script>
+	// Buffer to save log msgs for further rendering if we want previous logs.
+	var msgBuffer = [];
+
+	var system = "{{system.key.id()}}";
+    if(localStorage.getItem(system) == null) {
+        localStorage.setItem(system,true);
+    }
+
+	$('[data-toggle="switch"]').bootstrapSwitch('state', true);
+
+	$("#real-time-switch").on('switchChange.bootstrapSwitch',function(e, state) {
+		localStorage.setItem(system, state);
+	});
+
+	function addLog(elem) {
+		$('#log-table > tbody:first').prepend(elem);
+	}
+	
+
+    channel = new goog.appengine.Channel('{{ token }}');
+    socket = channel.open();
+    socket.onopen = onOpened;
+    socket.onmessage = onMessage;
+    socket.onerror = onError;
+    socket.onclose = onClose;
+
+    function onOpened() {
+    	console.log("Message channel opened");
+    }
+    function onMessage(data) {
+    	var log = JSON.parse(data.data);
+
+    	var logts = '<td>' + new Date(log.ts*1000) + '</td>';
+
+    	var loglevel = "";
+    	if (log.level == "info") {
+    		loglevel = '<td><label class="label label-info">' + 'Info' + '</label></td>';
+    	} else if (log.level == "warn") {
+    		loglevel = '<td><label class="label label-warning">' + 'Warning' + '</label></td>';
+    	} else if(log.level == "error") {
+    		loglevel = '<td><label class="label label-danger">' + 'Error' + '</label></td>';
+    	} else {
+    		loglevel = '<td><label class="label label-default">' + 'Unknown' + '</label></td>';
+    	}
+    	var logmsg = '<td>' + log.msg + '</td>';
+
+    	var element = '<tr>' + logts + loglevel + logmsg + '</tr>';
+    	element = $(element);
+
+    	enabled = localStorage.getItem(system);
+
+    	if (enabled == true || enabled == 'true') {
+    		addLog(element);	
+    	}
+    }
+    function onError(err) {
+    	console.log("Message channel has error: ", err);
+    }
+    function onClose() {
+    	console.log("Message channel closed");
+    }
+</script>
+{% endblock %}

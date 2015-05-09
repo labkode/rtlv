@@ -1,0 +1,25 @@
+{% extends "templates/main.html" %}
+{% block content %}
+<div class="jumbotron">
+<form class="form-inline" method="post" action="/admin/systems/create">
+ 	<p><b>Create system</b></p>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="name">Name:</label>
+      <div class="col-sm-10">
+        <input type="text" name="name" class="form-control" id="name" placeholder="Enter name">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="description">Description:</label>
+      <div class="col-sm-10">          
+        <input type="description" name="description" class="form-control" id="description" placeholder="Enter description">
+      </div>
+    </div>
+    <div class="form-group">        
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary">Create</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

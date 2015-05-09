@@ -1,0 +1,55 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <title>RTLV</title>
+    <meta name="description" content="">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/assets/css/flat-ui.min.css" rel="stylesheet">
+    <link href="/assets/css/rtlv.css" rel="stylesheet">
+
+</head>
+<body>
+    <nav class="navbar" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+          <span class="sr-only">Toggle navigation</span>
+        </button>
+        <a class="navbar-brand" href="/"><i class="fa fa-stumbleupon"></i> RealTimeLogViewer</a>
+      </div>
+      <ul class="nav navbar-nav">
+      {% if user %}
+      <li><a href="/admin/systems">Systems</a></li>
+      {% endif %}
+      </ul>
+      
+      <div class="collapse navbar-collapse" id="navbar-collapse-01">
+          <ul class="nav navbar-nav navbar-right">
+          <li><a href="/help">Help</a></li>
+          {% if user %}
+          <li><a href="/">Welcome {{user.nickname()}}</a></li>
+          <li><a href="{{users.create_logout_url('/')}}" style="color: red">Logout</a></li>
+          {% else %}
+          <li><a href="{{users.create_login_url()}}">Login</a></li>
+          {% endif %}
+         </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+
+    <div class="container text-center">
+    {% block content %}{% endblock %}
+    </div>
+
+      <script type="text/javascript" src="/assets/js/main.js"></script>
+      <script type="text/javascript" src="/_ah/channel/jsapi"></script>
+      <script src="/assets/js/jquery.js"></script>
+      <script src="/assets/js/flat-ui.min.js"></script>
+
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>
