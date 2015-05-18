@@ -1,7 +1,7 @@
 from google.appengine.ext.db import BadValueError
 from google.appengine.api import channel
 from google.appengine.api import users
-
+from google.appengine.ext import ndb
 
 import webapp2
 import jinja2
